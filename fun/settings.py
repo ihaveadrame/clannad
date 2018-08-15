@@ -45,6 +45,7 @@ REDIS_DB = 0  # Todo
 # Application definition
 
 INSTALLED_APPS = [
+    'weather.apps.WeatherConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -57,7 +58,7 @@ MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
+    # 'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
@@ -86,11 +87,17 @@ WSGI_APPLICATION = 'fun.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/2.1/ref/settings/#databases
+try:
+    # 从 local_settings 加载配置
+    # pylint: disable=W0401,W0614
+    from fun.local_settings import * # noqa
+except ImportError:
+    raise Exception("请在local_setting.py中配置数据库信息以及SECRET_KEY")
 
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'clanad',
+        'NAME': 'clannad',
         'USER': GLOBAL_DATABASE_USER,
         "PASSWORD": GLOBAL_DATABASE_PASS,
         "HOST": GLOBAL_DATABASE_HOST,
